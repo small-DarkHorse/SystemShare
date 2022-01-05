@@ -7,6 +7,9 @@
 ![截图](https://raw.githubusercontent.com/njcwking/ShareSample/master/resources/screenshots/%E6%88%AA%E5%9B%BE.jpg)
 
 ### 使用
+
+ 添加依赖  implementation 'com.github.small-DarkHorse:SystemShare:v1.0.5'
+
 #### 分享文字
 ```java
 SystemShare.getInstance()
