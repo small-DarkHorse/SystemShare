@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * 使用菜单项功能进行分享
+ * 使用菜单项进行分享
  *
  * @author WangZhenKai
  * @date 2018/11/23 15:16
