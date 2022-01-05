@@ -4,7 +4,7 @@
 利用Android系统原生的API方法实现分享文字、图片、文件等功能，其中`Share`类为分享的工具类，通过调用`share`方法实现分享功能。
 
 ### 截图
-![截图](./resources/screenshots/截图.jpg)
+![截图](https://raw.githubusercontent.com/njcwking/ShareSample/master/resources/screenshots/%E6%88%AA%E5%9B%BE.jpg)
 
 ### 使用
 #### 分享文字
