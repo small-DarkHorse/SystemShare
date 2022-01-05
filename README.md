@@ -52,15 +52,21 @@ SystemShare.getInstance()
     .setShareType(SystemShare.SHARE_APK_FILE)
     .setShareApkFile(fileUri)
     .showBlueTooth().build();
+```
+
 
 #### 直接蓝牙分享你的应用
 ```java
+ShareModel model = AppFileUtil.getAloneApp(this, this.getPackageName());
+Uri fileUri = UriUtil.getUriFromFile(this, model.getFilePath());
  SystemShare.getInstance()
     .setChooserTitle("标题")
     .setShareType(SystemShare.SHARE_APK_FILE)
     .setShareApkFile(fileUri)
     .build()
     .share(this);
+```	
+	
 ### 注意事项
 1. 运行项目时分享图片如遇崩溃请替换本地已有的图片路径；
 2.实现基本的系统分享功能
