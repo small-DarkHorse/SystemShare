@@ -1,7 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2014-2019. All rights reserved.
- *
- */
 
 package com.phone.share.ui;
 
@@ -13,7 +9,6 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,9 +16,8 @@ import android.widget.Toast;
 import com.phone.share.R;
 import com.phone.share.model.ShareModel;
 import com.phone.share.utils.ActDialog;
-import com.phone.share.utils.AppFileUtil;
+import com.phone.share.utils.ShareFileUtil;
 import com.phone.share.utils.PxUtils;
-import com.phone.share.utils.TimeUtil;
 
 import java.io.File;
 import java.util.Date;
@@ -43,11 +37,22 @@ public class BlueToothShareDialog extends ActDialog {
     private TextView tvAppInstallTime;
     private TextView brnShare;
     private ShareModel shareModel;
+    private boolean canceledOnTouchOutside;
+    int userShareType;
 
     public BlueToothShareDialog(Activity context, ShareEvent shareEvent) {
         super(context, R.style.MyDialog);
+        userShareType = 0;
         this.mContext = context;
         this.mShareEvent = shareEvent;
+    }
+
+    public BlueToothShareDialog(Activity context, ShareEvent shareEvent, boolean isCanceledOnTouchOutside) {
+        super(context, R.style.MyDialog);
+        userShareType = 1;
+        this.mContext = context;
+        this.mShareEvent = shareEvent;
+        this.canceledOnTouchOutside = isCanceledOnTouchOutside;
     }
 
     @Override
@@ -70,8 +75,11 @@ public class BlueToothShareDialog extends ActDialog {
         lp.gravity = Gravity.BOTTOM;
         windowE2cBnd.setAttributes(lp);
         windowE2cBnd.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        setCanceledOnTouchOutside(true);
-
+        if (userShareType == 0) {
+            setCanceledOnTouchOutside(true);
+        } else {
+            setCanceledOnTouchOutside(canceledOnTouchOutside);
+        }
         ivAppIcon = findViewById(R.id.ivAppIcon);
         tvAppName = findViewById(R.id.tvAppName);
         tvAppSize = findViewById(R.id.tvAppSize);
@@ -94,17 +102,17 @@ public class BlueToothShareDialog extends ActDialog {
     }
 
     private BlueToothShareDialog setAttr(Drawable icon, String appName, String appSize, String time) {
-        if (!AppFileUtil.isEmptyStr(appName)) {
+        if (!ShareFileUtil.isEmptyStr(appName)) {
             tvAppName.setText(appName);
         } else {
             tvAppName.setText("iSupply");
         }
-        if (!AppFileUtil.isEmptyStr(appSize)) {
+        if (!ShareFileUtil.isEmptyStr(appSize)) {
             tvAppSize.setText(appSize);
         } else {
             tvAppSize.setText("0M");
         }
-        if (!AppFileUtil.isEmptyStr(time)) {
+        if (!ShareFileUtil.isEmptyStr(time)) {
             tvAppInstallTime.setText(time);
         } else {
             Date date = new Date();
@@ -126,7 +134,7 @@ public class BlueToothShareDialog extends ActDialog {
 
     //获取当前应用信息并分享
     private void getAppInfo() {
-        shareModel = AppFileUtil.getAloneApp(mContext, mContext.getApplicationContext().getPackageName());
+        shareModel = ShareFileUtil.getAloneApp(mContext, mContext.getApplicationContext().getPackageName());
         if (shareModel != null) {
             mContext.runOnUiThread(new Runnable() {
                 @Override
