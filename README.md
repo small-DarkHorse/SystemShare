@@ -67,8 +67,7 @@ Uri fileUri = UriUtil.getUriFromFile(this, model.getFilePath());
     .share(this);
 ```
 
-#### 弹窗分享你的应用,并有效验设备是否支持蓝牙，是否打开了蓝牙并有相应操作
-#### 直接使用系统安全提醒弹窗提示，打开蓝牙并自动搜索
+#### 弹窗分享你的应用,并有效验设备是否支持蓝牙，是否打开了蓝牙并有相应操作,直接使用系统安全提醒弹窗提示，打开蓝牙并自动搜索     
 ```java
  ShareModel model = ShareFileUtil.getAloneApp(this, this.getPackageName());
  Uri fileUri = UriUtil.getUriFromFile(this, model.getFilePath());
@@ -80,8 +79,8 @@ Uri fileUri = UriUtil.getUriFromFile(this, model.getFilePath());
                 .showBlueTooth().build();
 ```
 
-#### 弹窗分享你的应用,并有效验设备是否支持蓝牙，是否打开了蓝牙并有相应操作
-#### 跳转到蓝牙设置界面，让用户自己操作【尊重用户隐私和体验】
+#### 弹窗分享你的应用,并有效验设备是否支持蓝牙，是否打开了蓝牙并有相应操作,跳转到蓝牙设置界面，让用户自己操作【尊重用户隐私和体验】
+```java
  ShareModel model = ShareFileUtil.getAloneApp(this, this.getPackageName());
  Uri fileUri = UriUtil.getUriFromFile(this, model.getFilePath());
         SystemShare.getInstance()
@@ -93,6 +92,7 @@ Uri fileUri = UriUtil.getUriFromFile(this, model.getFilePath());
 ```
 
 #### 弹窗分享你的应用,并有效验设备是否支持蓝牙，是否打开了蓝牙并有相应操作，且要回调处理
+```java
  ShareModel model = ShareFileUtil.getAloneApp(this, this.getPackageName());
         Uri fileUri = UriUtil.getUriFromFile(this, model.getFilePath());
         SystemShare.getInstance()
@@ -112,7 +112,7 @@ Uri fileUri = UriUtil.getUriFromFile(this, model.getFilePath());
               //todo
           }
       }
-###提醒： 用.showBlueToothForResult(000)   和 showSetBlueToothForResult(000)都需要在Activity中回调
+      提醒： 用.showBlueToothForResult(000)  和 showSetBlueToothForResult(000)都需要在Activity中回调
 ```
 
 
