@@ -49,7 +49,7 @@
         android:layout_marginRight="25dp"
         android:background="@drawable/shape_corner_app"
         android:gravity="center"
-        android:text="点击蓝牙分享"
+        android:text="点击分享"
         android:textColor="@color/white"
         android:textSize="15dp" />
 </LinearLayout>
