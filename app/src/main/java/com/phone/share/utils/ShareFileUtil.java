@@ -18,7 +18,7 @@ import java.util.List;
  * @author WangZhenKai
  * @since 2021/1/4
  */
-public class AppFileUtil {
+public class ShareFileUtil {
     private static File apkFile = null;
 
     public static ShareModel getAloneApp(Activity mContext, String packageName) {
@@ -81,7 +81,7 @@ public class AppFileUtil {
         }
         return applicationLogo;
     }
-    public static boolean isEmptyStr(String strTarget) {
-        return (("null".equals(strTarget)) || (null == strTarget) || (0 == strTarget.length()));
+     public static boolean isEmptyStr(String strTarget) {
+        return (("null".equals(strTarget)) || (null == strTarget) || (0 == strTarget.length()) || "".equals(strTarget));
     }
 }
