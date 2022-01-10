@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -34,11 +36,18 @@ public class UriUtil {
      */
     public static Uri getUriFromFile(Activity mContext, String filePath) {
         Uri uri = null;
+        if (ShareFileUtil.isEmptyStr(filePath)) {
+            Toast.makeText(mContext, "文件路径不能为空或null,请检查后重试", Toast.LENGTH_LONG).show();
+            Log.e("AppShare", "文件路径不能为空或null");
+            return uri;
+        }
         File file = new File(filePath);
         if (!file.exists()) {
-            return null;
+            Toast.makeText(mContext, "你的文件是不存在的,请确保文件存在并且路径正常", Toast.LENGTH_LONG).show();
+            Log.e("AppShare", "你分享的文件是不存在");
+            return uri;
         }
-        if (Build.VERSION.SDK_INT < 24) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             uri = Uri.fromFile(file);
         } else {
             int permissionWriteResult = ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -53,24 +62,5 @@ public class UriUtil {
             }
         }
         return uri;
-    }
-
-    public static <T extends Activity> boolean isActivityFinished(T checkContext) {
-        if (null == checkContext) {
-            return true;
-        }
-        return isActivityFinished(new WeakReference<Activity>(checkContext));
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public static <T extends Activity> boolean isActivityFinished(WeakReference<T> checkActivity) {
-        if (null == checkActivity || null == checkActivity.get()) {
-            return true;
-        }
-        Activity tempCheckActivity = checkActivity.get();
-        if (tempCheckActivity.isDestroyed() || tempCheckActivity.isFinishing()) {
-            return true;
-        }
-        return false;
     }
 }
