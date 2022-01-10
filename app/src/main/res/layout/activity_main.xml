@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,26 +9,44 @@
     android:padding="10dp"
     tools:context=".ui.MainActivity">
 
-    <Button
+    <TextView
+        android:id="@+id/btnBlueToothShare"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/shape_corner_app"
+        android:gravity="center"
+        android:text="蓝牙分享"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+    <TextView
         android:id="@+id/btnSystemShare"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_corner_app"
+        android:gravity="center"
         android:text="系统分享"
-        />
+        android:textColor="@color/white" />
 
-    <Button
+    <TextView
         android:id="@+id/btnActionBarShare"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/shape_corner_app"
+        android:gravity="center"
         android:text="系统ActionBar分享"
-        />
+        android:textColor="@color/white"
+        android:visibility="gone" />
 
-    <Button
+    <TextView
         android:id="@+id/btnCustomShare"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/shape_corner_app"
+        android:gravity="center"
         android:text="自定义分享"
-        />
+        android:textColor="@color/white" />
 </LinearLayout>
