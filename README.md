@@ -67,7 +67,7 @@ Uri fileUri = UriUtil.getUriFromFile(this, model.getFilePath());
     .share(this);
 ```
 
-#### 弹窗分享你的应用,并有效验设备是否支持蓝牙，是否打开了蓝牙并有相应操作,直接使用系统安全提醒弹窗提示，打开蓝牙并自动搜索     
+#### 弹窗分享你的应用,并效验设备是否支持蓝牙，是否开启蓝牙并有相应操作,直接使用系统安全提醒弹窗提示，打开蓝牙并自动搜索     
 ```java
  ShareModel model = ShareFileUtil.getAloneApp(this, this.getPackageName());
  Uri fileUri = UriUtil.getUriFromFile(this, model.getFilePath());
@@ -79,7 +79,7 @@ Uri fileUri = UriUtil.getUriFromFile(this, model.getFilePath());
                 .showBlueTooth().build();
 ```
 
-#### 弹窗分享你的应用,并有效验设备是否支持蓝牙，是否打开了蓝牙并有相应操作,跳转到蓝牙设置界面，让用户自己操作【尊重用户隐私和体验】
+#### 弹窗分享你的应用,并效验设备是否支持蓝牙，是否开启蓝牙并有相应操作,跳转到蓝牙设置界面，让用户自己操作【尊重用户隐私和体验】
 ```java
  ShareModel model = ShareFileUtil.getAloneApp(this, this.getPackageName());
  Uri fileUri = UriUtil.getUriFromFile(this, model.getFilePath());
@@ -118,5 +118,5 @@ Uri fileUri = UriUtil.getUriFromFile(this, model.getFilePath());
 
 ### 注意事项
 1. 运行项目时分享图片如遇崩溃请替换本地已有的图片路径；
-2.实现基本的系统分享功能
+2. 实现基本的系统分享功能；
 3. `Share`类自动通过后缀名识别mimeType,无需用户指定；
