@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.webkit.MimeTypeMap;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,6 +151,12 @@ public class Share {
      * @param requestCode
      */
     public void shareForResult(Activity activity, int requestCode) {
-        activity.startActivityForResult(Intent.createChooser(shareIntent, chooserTitle), requestCode);
+        if (shareType == SystemShare.SHARE_APK_FILE) {
+            Intent chooser = Intent.createChooser(shareIntent, chooserTitle);
+            chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            activity.startActivityForResult(chooser, requestCode);
+        } else {
+            activity.startActivityForResult(Intent.createChooser(shareIntent, chooserTitle), requestCode);
+        }
     }
 }
