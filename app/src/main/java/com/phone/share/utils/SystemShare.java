@@ -3,6 +3,7 @@ package com.phone.share.utils;
 import android.app.Activity;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.IntDef;
 
@@ -43,9 +44,10 @@ public class SystemShare {
     public static final int SHARE_APK_FILE = 4;
 
     private Activity context;
+    private int isUseSelfCanceledOnTouchOutside = -1;
     private BlueToothShareDialog blueToothShareDialog;
 
-    @IntDef({SHARE_TEXT, SHARE_FILE, SHARE_MULTIPLE_FILES})
+    @IntDef({SHARE_TEXT, SHARE_FILE, SHARE_MULTIPLE_FILES, SHARE_APK_FILE})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ShareType {
     }
@@ -85,6 +87,10 @@ public class SystemShare {
      * 分享应用的文件路径
      */
     private Uri shareApkFile;
+    /**
+     * 是否取消外部点击关闭dialog
+     */
+    private boolean canceledOnTouchOutside;
 
     public String getText() {
         return text;
@@ -140,18 +146,107 @@ public class SystemShare {
         return this;
     }
 
+    public boolean isCanceledOnTouchOutside() {
+        return canceledOnTouchOutside;
+    }
+
+    public void setCanceledOnTouchOutside(boolean canceledOnTouchOutside) {
+        isUseSelfCanceledOnTouchOutside = 10;
+        this.canceledOnTouchOutside = canceledOnTouchOutside;
+    }
+
     public Share build() {
-        Log.d("Share=build==》","Running build");
         return new Share(this);
     }
 
+    //不需要回调
     public SystemShare showBlueTooth() {
-        Log.d("Share=showBlueTooth==》","Running showBlueTooth");
-        blueToothShareDialog = new BlueToothShareDialog(context, new BlueToothShareDialog.ShareEvent() {
-            @Override
-            public void onShare(File apkFile) {
-                 build().share(context);
-            }
+        if (CommonUtil.validateSupportBlueTooth(context)) {
+            CommonUtil.validateDeviceOpenBlueTooth(context, () -> {
+                if (isUseSelfCanceledOnTouchOutside == 10) {
+                    blueToothShareDialog = new BlueToothShareDialog(context, apkFile -> {
+                        build().share(context);
+                        blueToothShareDialog.dismiss();
+                    }, isCanceledOnTouchOutside());
+                } else {
+                    blueToothShareDialog = new BlueToothShareDialog(context, apkFile -> {
+                        build().share(context);
+                        blueToothShareDialog.dismiss();
+                    });
+                }
+                blueToothShareDialog.show();
+            });
+        }
+        return this;
+    }
+
+    //需要在Activity中回调蓝牙状态，处理自己的业务逻辑
+    public SystemShare showBlueToothForResult(int requestCode) {
+        if (CommonUtil.validateSupportBlueTooth(context)) {
+            CommonUtil.validateDeviceOpenBlueTooth(context, () -> {
+                if (isUseSelfCanceledOnTouchOutside == 10) {
+                    blueToothShareDialog = new BlueToothShareDialog(context, apkFile -> {
+                        build().shareForResult(context, requestCode);
+                        blueToothShareDialog.dismiss();
+                    }, isCanceledOnTouchOutside());
+                } else {
+                    blueToothShareDialog = new BlueToothShareDialog(context, apkFile -> {
+                        build().shareForResult(context, requestCode);
+                        blueToothShareDialog.dismiss();
+                    });
+                }
+                blueToothShareDialog.show();
+            });
+        }
+        return this;
+    }
+
+    //不需要回调,让用户自己操作设备
+    public SystemShare showSetBlueTooth() {
+        if (CommonUtil.validateSupportBlueTooth(context)) {
+            CommonUtil.validateDeviceSetBlueTooth(context, () -> {
+                if (isUseSelfCanceledOnTouchOutside == 10) {
+                    blueToothShareDialog = new BlueToothShareDialog(context, apkFile -> {
+                        build().share(context);
+                        blueToothShareDialog.dismiss();
+                    }, isCanceledOnTouchOutside());
+                } else {
+                    blueToothShareDialog = new BlueToothShareDialog(context, apkFile -> {
+                        build().share(context);
+                        blueToothShareDialog.dismiss();
+                    });
+                }
+                blueToothShareDialog.show();
+            });
+        }
+        return this;
+    }
+
+    //需要在Activity中回调蓝牙状态，处理自己的业务逻辑,让用户自己操作设备
+    public SystemShare showSetBlueToothForResult(int requestCode) {
+        if (CommonUtil.validateSupportBlueTooth(context)) {
+            CommonUtil.validateDeviceSetBlueTooth(context, () -> {
+                if (isUseSelfCanceledOnTouchOutside == 10) {
+                    blueToothShareDialog = new BlueToothShareDialog(context, apkFile -> {
+                        build().shareForResult(context, requestCode);
+                        blueToothShareDialog.dismiss();
+                    }, isCanceledOnTouchOutside());
+                } else {
+                    blueToothShareDialog = new BlueToothShareDialog(context, apkFile -> {
+                        build().shareForResult(context, requestCode);
+                        blueToothShareDialog.dismiss();
+                    });
+                }
+                blueToothShareDialog.show();
+            });
+        }
+        return this;
+    }
+
+    public SystemShare showDefaultBlueTooth() {
+        blueToothShareDialog = new BlueToothShareDialog(context, apkFile -> {
+            build().share(context);
+            blueToothShareDialog.dismiss();
         });
         blueToothShareDialog.show();
         return this;
