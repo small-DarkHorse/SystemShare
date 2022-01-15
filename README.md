@@ -7,6 +7,19 @@
 ![截图](./resources/screenshots/截图.jpg)
 
 ### 使用
+#### 依赖
+1、Add it in your root build.gradle at the end of repositories:
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+    
+2、Add the dependency    
+dependencies {
+	 implementation 'com.github.small-DarkHorse:SystemShare:v1.0.8'
+}
 #### 分享文字
 ```java
 SystemShare.getInstance()
