@@ -4,8 +4,7 @@
 利用Android系统原生的API方法实现分享文字、图片、文件等功能，其中`Share`类为分享的工具类，通过调用`share`方法实现分享功能。
 
 ### 实例图
-![截图](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/10/23/166a04102b8529e8~tplv-t2oaga2asx-watermark.awebp,
-https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/10/23/166a04102b976798~tplv-t2oaga2asx-watermark.awebp)
+![截图](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/10/23/166a04102b8529e8~tplv-t2oaga2asx-watermark.awebp)
 
 ### 使用
 #### 依赖
