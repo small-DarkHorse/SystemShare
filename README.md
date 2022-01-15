@@ -8,6 +8,7 @@
 
 ### 使用
 #### 依赖
+```步骤
 1、Add it in your root build.gradle at the end of repositories:
 allprojects {
 		repositories {
@@ -16,10 +17,12 @@ allprojects {
 		}
 	}
     
-2、Add the dependency    
+2、Add the dependency
+```步骤
 dependencies {
 	 implementation 'com.github.small-DarkHorse:SystemShare:v1.0.8'
 }
+```
 #### 分享文字
 ```java
 SystemShare.getInstance()
