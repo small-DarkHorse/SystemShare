@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.widget.Toast;
 
+import com.phone.share.dialog.TipDialog;
 import com.phone.share.inter.BlueToothShareCallBack;
 
 import java.lang.ref.WeakReference;
@@ -33,23 +34,10 @@ public class CommonUtil {
                 toothShareCallBack.startShareApp();
             }
         } else { // 未开启蓝牙，去开启并执行附近蓝牙搜索
-            new AlertDialog.Builder(context)
-                    .setTitle("提醒")
-                    .setMessage("您还未开启蓝牙，请先开启")
-                    .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            BluetoothManager.doWindowTurnOnBlueTooth(context);
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(context, "您拒绝开启蓝牙，无法进行蓝牙分享！", Toast.LENGTH_LONG).show();
-                            dialogInterface.dismiss();
-                        }
-                    }).show();
+            new TipDialog(context, () -> BluetoothManager.doWindowTurnOnBlueTooth(context),
+                    () -> Toast.makeText(context, "您拒绝开启蓝牙，无法进行蓝牙分享！", Toast.LENGTH_LONG).show())
+                    .setTitle("蓝牙状态提醒")
+                    .setContent("您还未开启蓝牙，请先开启").show();
         }
     }
 
@@ -66,23 +54,10 @@ public class CommonUtil {
                 toothShareCallBack.startShareApp();
             }
         } else { // 未开启蓝牙，去蓝牙设置界面让用户开启蓝牙
-            new AlertDialog.Builder(context)
-                    .setTitle("提醒")
-                    .setMessage("您还未开启蓝牙，请先开启")
-                    .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            BluetoothManager.toBlueToothSetting(context);
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(context, "您拒绝开启蓝牙，无法进行蓝牙分享！", Toast.LENGTH_LONG).show();
-                            dialogInterface.dismiss();
-                        }
-                    }).show();
+            new TipDialog(context, () -> BluetoothManager.toBlueToothSetting(context),
+                    () -> Toast.makeText(context, "您拒绝开启蓝牙，无法进行蓝牙分享！", Toast.LENGTH_LONG).show())
+                    .setTitle("蓝牙状态提醒")
+                    .setContent("您还未开启蓝牙，请先开启").show();
         }
     }
 
