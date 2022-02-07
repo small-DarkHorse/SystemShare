@@ -36,9 +36,9 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/shape_corner_app"
         android:gravity="center"
-        android:text="系统ActionBar分享"
+        android:text="应用列表分享"
         android:textColor="@color/white"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/btnCustomShare"
