@@ -42,6 +42,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                && (!BluetoothManager.isBlueToothEnabled())) {
 //            turnOnBlueTooth();
 //        }
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
         initView();
     }
 
