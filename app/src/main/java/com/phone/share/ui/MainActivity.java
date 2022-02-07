@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(SystemShareActivity.createIntent(this));
                 break;
             case R.id.btnActionBarShare:
+                 startActivity(new Intent(this, AppListAct.class));
                 //startActivity(MenuShareProviderActivity.createIntent(this));
                 break;
             case R.id.btnCustomShare:
@@ -92,23 +93,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //未开启蓝牙，去开启
             else {
                 Toast.makeText(this, "您的设备没有开启蓝牙，请去开启！", Toast.LENGTH_LONG).show();
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setTitle("提醒")
-                        .setMessage("您还未开启蓝牙，请先开启")
-                        .setPositiveButton("去开启", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                BluetoothManager.toBlueToothSetting(MainActivity.this);
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        });
-                builder.create().show();
+                new TipDialog(this, () -> BluetoothManager.doWindowTurnOnBlueTooth(this))
+                        .setTitle("蓝牙状态提醒")
+                        .setContent("您还未开启蓝牙，请先开启").show();
             }
         }
     }
