@@ -1,0 +1,13 @@
+package com.phone.share.inter;
+
+import android.net.Uri;
+
+/**
+ * share
+ *
+ * @author WangZhenkai
+ * @since 2022/1/27
+ */
+public interface UriCallBack {
+    void ok(Uri uri);
+}
