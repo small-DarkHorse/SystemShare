@@ -6,13 +6,11 @@ import android.net.Uri;
 import android.os.StrictMode;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author WangZhenKai
- * @ClassName : Share
  * @Date 2021/1/4
  * @Description :分享
  */
