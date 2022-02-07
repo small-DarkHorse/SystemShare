@@ -1,0 +1,113 @@
+package com.phone.share.dialog;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.phone.share.R;
+import com.phone.share.utils.ActDialog;
+import com.phone.share.utils.PxUtils;
+
+/**
+ * 提示弹窗
+ *
+ * @author WangZhenKai
+ * @since 2020/12/31
+ */
+public class TipDialog extends ActDialog {
+    private final Context mContext;
+    private ImageView tipIcon;
+    private TextView tvTitle;
+    private TextView tvDescContent;
+    private TextView tvCancel;
+    private TextView tvConfirm;
+    // 属性
+    private String mIconId;
+    private String mTitle;
+    private String mContent;
+    private SureEvent mSureEvent;
+    private CancelEvent mCancelEvent;
+
+    public TipDialog(Context context, SureEvent sureEvent) {
+        super(context, R.style.MyDialog);
+        this.mContext = context;
+        this.mSureEvent = sureEvent;
+    }
+
+    public TipDialog(Context context, SureEvent sureEvent, CancelEvent cancelEvent) {
+        super(context, R.style.MyDialog);
+        this.mContext = context;
+        this.mSureEvent = sureEvent;
+        this.mCancelEvent = cancelEvent;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dialog_tip);
+        // 设置对话框在屏幕的位置
+        Window windowE2cBnd = getWindow();
+        if (windowE2cBnd == null) {
+            return;
+        }
+        WindowManager windowManager = windowE2cBnd.getWindowManager();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        Display display = windowManager.getDefaultDisplay();
+        display.getMetrics(outMetrics);
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.width = outMetrics.widthPixels * 3 / 4;
+        lp.height = PxUtils.dp2px(mContext, 280);
+        lp.dimAmount = 0.1f;
+        lp.gravity = Gravity.CENTER;
+        windowE2cBnd.setAttributes(lp);
+        windowE2cBnd.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        setCanceledOnTouchOutside(false);
+        tipIcon = findViewById(R.id.tipIcon);
+        tvTitle = findViewById(R.id.tvTitle);
+        tvDescContent = findViewById(R.id.tvDescContent);
+        tvCancel = findViewById(R.id.tvCancel);
+        tvConfirm = findViewById(R.id.tvConfirm);
+        tvTitle.setText(mTitle);
+        tvDescContent.setText(mContent);
+        initEvent();
+    }
+
+    private void initEvent() {
+        tvConfirm.setOnClickListener(view -> {
+            if (mSureEvent != null) {
+                mSureEvent.onConfirm();
+                dismiss();
+            }
+        });
+        tvCancel.setOnClickListener(view -> {
+            if (mCancelEvent != null) {
+                mCancelEvent.onCancel();
+            }
+            dismiss();
+        });
+    }
+
+    public TipDialog setTitle(String title) {
+        mTitle = title;
+        return this;
+    }
+
+    public TipDialog setContent(String content) {
+        mContent = content;
+        return this;
+    }
+
+    public interface SureEvent {
+        void onConfirm();
+    }
+
+    public interface CancelEvent {
+        void onCancel();
+    }
+}
