@@ -1,0 +1,28 @@
+package com.phone.share;
+
+import androidx.annotation.Nullable;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
+import com.phone.share.model.ShareModel;
+
+import java.util.List;
+
+/**
+ * share
+ *
+ * @author wangzhenkai
+ * @since 2022/1/27
+ */
+public class AppAdapter extends BaseQuickAdapter<ShareModel, BaseViewHolder> {
+
+    public AppAdapter(@Nullable List<ShareModel> data) {
+        super(R.layout.app_view, data);
+    }
+
+    @Override
+    protected void convert(BaseViewHolder helper, ShareModel item) {
+        helper.setImageDrawable(R.id.logo, item.getIcon());
+        helper.setText(R.id.tvAppName, item.getAppName());
+    }
+}
