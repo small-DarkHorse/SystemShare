@@ -1,0 +1,66 @@
+package com.phone.share.dialog;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.Bundle;
+import android.widget.TextView;
+
+import com.phone.share.R;
+
+
+/**
+ * 定义全局加载View
+ *
+ * @author wangzhenkai
+ * @since 2021-11-05
+ */
+public class LoadingView extends ProgressDialog {
+    private TextView loadingTV;
+    private Context mContext;
+    /**
+     * 初始化
+     *
+     * @param context 上下文
+     */
+    public LoadingView(Context context) {
+        super(context, R.style.MyDialog);
+        mContext = context;
+    }
+
+    /**
+     * 初始化
+     *
+     * @param context 上下文
+     * @param theme 主题
+     */
+    public LoadingView(Context context, int theme) {
+        super(context, theme);
+        mContext = context;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.progress_view);
+        loadingTV = findViewById(R.id.msg_tv);
+        loadingTV.setText("数据加载中...");
+        setCancelable(false);
+        setCanceledOnTouchOutside(false);
+    }
+
+    /**
+     * 显示视图
+     */
+    public void showLoading() {
+        show();
+    }
+
+    /**
+     * 隐藏视图
+     */
+    public void hideLoading() {
+        if (isShowing()) {
+            dismiss();
+        }
+    }
+}
