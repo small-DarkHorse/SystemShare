@@ -1,0 +1,131 @@
+package com.phone.share.dialog;
+
+import android.app.Activity;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.phone.share.R;
+import com.phone.share.model.ShareModel;
+import com.phone.share.utils.ActDialog;
+import com.phone.share.utils.PxUtils;
+import com.phone.share.utils.ShareFileUtil;
+
+import java.io.File;
+import java.util.Date;
+
+/**
+ * 蓝牙分享弹窗
+ *
+ * @author WangZhenKai
+ * @since 2020/12/31
+ */
+public class KShareDialog extends ActDialog {
+    private ShareEvent mShareEvent;
+    private final Activity mContext;
+    private LinearLayout dgBack;
+    private ImageView ivAppIcon;
+    private TextView tvAppName;
+    private TextView tvAppSize;
+    private TextView tvAppInstallTime;
+    private TextView brnShare;
+    // 属性
+    private Drawable mIcon;
+    private String mAppName;
+    private String mAppSize;
+    private String mTime;
+
+    public KShareDialog(Activity context, ShareModel model, ShareEvent shareEvent) {
+        super(context, R.style.MyDialog);
+        this.mContext = context;
+        this.mShareEvent = shareEvent;
+        setProper(model.getIcon(), model.getAppName(), model.getApkSize(), model.getApkFirstInstallTime());
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dialog_bluetooth_share);
+        // 设置对话框在屏幕的位置
+        Window windowE2cBnd = getWindow();
+        if (windowE2cBnd == null) {
+            return;
+        }
+        WindowManager windowManager = windowE2cBnd.getWindowManager();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        Display display = windowManager.getDefaultDisplay();
+        display.getMetrics(outMetrics);
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.width = outMetrics.widthPixels * 3 / 4;
+        lp.height = PxUtils.dp2px(mContext, 280);
+        lp.dimAmount = 0.1f;
+        lp.gravity = Gravity.CENTER;
+        windowE2cBnd.setAttributes(lp);
+        windowE2cBnd.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        setCanceledOnTouchOutside(false);
+        dgBack = findViewById(R.id.dgBack);
+        ivAppIcon = findViewById(R.id.ivAppIcon);
+        tvAppName = findViewById(R.id.tvAppName);
+        tvAppSize = findViewById(R.id.tvAppSize);
+        tvAppInstallTime = findViewById(R.id.tvAppInstallTime);
+        brnShare = findViewById(R.id.brnShare);
+        dgBack.setBackgroundResource(R.drawable.shape_corner_white);
+        initEvent();
+    }
+
+    private void initEvent() {
+        brnShare.setOnClickListener(view -> {
+            if (mShareEvent != null) {
+                mShareEvent.onShare();
+                dismiss();
+            }
+        });
+        setAttr(mIcon, mAppName, mAppSize, mTime);
+    }
+
+    private KShareDialog setAttr(Drawable icon, String appName, String appSize, String time) {
+        if (!ShareFileUtil.isEmptyStr(appName)) {
+            tvAppName.setText(appName);
+        } else {
+            tvAppName.setText("iSupply");
+        }
+        if (!ShareFileUtil.isEmptyStr(appSize)) {
+            tvAppSize.setText(appSize);
+        } else {
+            tvAppSize.setText("0M");
+        }
+        if (!ShareFileUtil.isEmptyStr(time)) {
+            tvAppInstallTime.setText(time);
+        } else {
+            Date date = new Date();
+            String timed = date.getYear() + "年" + date.getMonth() + "月" + date.getDay() + "日 " + date.getHours() + ":00";
+            tvAppInstallTime.setText(timed);
+        }
+        if (icon == null) {
+            ivAppIcon.setImageResource(R.mipmap.ic_launcher);
+        } else {
+            ivAppIcon.setImageDrawable(icon);
+        }
+        return this;
+    }
+
+    private KShareDialog setProper(Drawable icon, String appName, String appSize, String time) {
+        mIcon = icon;
+        mAppName = appName;
+        mAppSize = appSize;
+        mTime = time;
+        return this;
+    }
+
+    public interface ShareEvent {
+        void onShare();
+    }
+}
