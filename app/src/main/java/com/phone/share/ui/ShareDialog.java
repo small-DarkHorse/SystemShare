@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.phone.share.R;
+import com.phone.share.inter.OnItemClickListener;
 import com.phone.share.model.ShareModel;
 import com.phone.share.utils.PxUtils;
 
@@ -45,7 +46,7 @@ public class ShareDialog extends Dialog implements AdapterView.OnItemClickListen
 
     }
 
-    protected ShareDialog(Context context, OnItemClickListener mItemClickListener) {
+    public ShareDialog(Context context, OnItemClickListener mItemClickListener) {
         super(context, R.style.MyDialog);
         this.mItemClickListener = mItemClickListener;
     }
@@ -62,15 +63,6 @@ public class ShareDialog extends Dialog implements AdapterView.OnItemClickListen
         if (mItemClickListener != null) {
             mItemClickListener.onItemClick(mShareApps.get(i));
         }
-    }
-
-    interface OnItemClickListener {
-        void onItemClick(ShareModel shareBean);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.mItemClickListener = listener;
-
     }
 
     private void initView() {
