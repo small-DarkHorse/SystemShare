@@ -1,8 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2014-2019. All rights reserved.
- *
- */
-
 package com.phone.share.utils;
 
 import android.app.Activity;
