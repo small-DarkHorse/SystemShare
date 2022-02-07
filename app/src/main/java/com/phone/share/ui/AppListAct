@@ -1,0 +1,92 @@
+package com.phone.share.ui
+
+import android.content.Intent
+import android.os.Bundle
+import android.os.StrictMode
+import android.os.StrictMode.VmPolicy
+import android.util.Log
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.phone.share.AppAdapter
+import com.phone.share.R
+import com.phone.share.dialog.KShareDialog
+import com.phone.share.dialog.LoadingView
+import com.phone.share.model.ShareModel
+import com.phone.share.utils.CommonUtil
+import com.phone.share.utils.ShareFileUtil
+import com.phone.share.utils.UriUtil
+import java.io.File
+
+class AppListAct : AppCompatActivity() {
+    private lateinit var appAdapter: AppAdapter
+    private lateinit var recycle: RecyclerView
+    private lateinit var tvTitle: TextView
+    private var models: List<ShareModel> = arrayListOf()
+    private val loading by lazy { LoadingView(this) }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_app_list)
+        supportActionBar?.hide()
+        tvTitle = findViewById(R.id.tvTitleBar)
+        recycle = findViewById(R.id.recycle)
+        tvTitle.text = "选择分享应用"
+        var manager = LinearLayoutManager(this)
+        manager.orientation = LinearLayoutManager.VERTICAL
+        recycle?.layoutManager = manager
+        getInfo()
+    }
+
+
+    private fun getInfo() {
+        loading.showLoading()
+        Thread {
+            models = ShareFileUtil.getMultipleApp(this)
+            runOnUiThread {
+                loading.hideLoading()
+                if (models.isNotEmpty()) {
+                    appAdapter = AppAdapter(models)
+                    recycle?.adapter = appAdapter
+                    appAdapter.notifyDataSetChanged()
+                    appAdapter.setOnItemClickListener { _, _, position ->
+                        var fileUri = UriUtil.getUriFromFileS(this, models[position].filePath) { fileUri ->
+                            if (fileUri != null) {
+                                Log.d("aaa==>", models[position].appName)
+                                Log.d("aaaPath==>", fileUri.path)
+                                var model: ShareModel = models[position]
+                                model.filePath = fileUri.path
+                                model.file = File(fileUri.path)
+                                if (CommonUtil.validateSupportBlueTooth(this)) {
+                                    CommonUtil.validateDeviceOpenBlueTooth(this) {
+                                        var shareDialog = KShareDialog(this, model) {
+                                            var shareIntent = Intent()
+                                            shareIntent.action = Intent.ACTION_SEND
+                                            shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
+                                            shareIntent.setPackage("com.android.bluetooth")
+                                            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                            shareIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                                            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                            val builder = VmPolicy.Builder()
+                                            StrictMode.setVmPolicy(builder.build())
+                                            builder.detectFileUriExposure()
+                                            shareIntent.type = "*/*"
+                                            val chooser = Intent.createChooser(shareIntent, "分享")
+                                            chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                            startActivity(chooser)
+                                        }
+                                        shareDialog.show()
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                } else {
+                    Toast.makeText(this, "No data is found！", Toast.LENGTH_LONG).show()
+                }
+            }
+        }.start()
+    }
+}
