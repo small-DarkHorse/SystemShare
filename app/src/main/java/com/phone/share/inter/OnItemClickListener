@@ -1,0 +1,13 @@
+package com.phone.share.inter;
+
+import com.phone.share.model.ShareModel;
+
+/**
+ * share
+ *
+ * @author WangZhenkai
+ * @since 2022/2/7
+ */
+public interface OnItemClickListener {
+    void onItemClick(ShareModel shareBean);
+}
